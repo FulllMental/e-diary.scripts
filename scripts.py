@@ -17,10 +17,7 @@ def fix_marks(schoolkid):
     if not kid:
         print('Из-за ошибки поиска ученика дальше программа выполниться не может...')
         return
-    all_bad_marks = models.Mark.objects.filter(schoolkid=kid, points__lte=3)
-    for bad_mark in all_bad_marks:
-        bad_mark.points = 5
-        bad_mark.save()
+    models.Mark.objects.filter(schoolkid=kid, points__lte=3).update(points=5)
     print('Все плохие оценки исправлены...')
 
 
