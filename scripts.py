@@ -45,13 +45,16 @@ def create_commendation(schoolkid, subject):
         print('Из-за ошибки поиска ученика дальше программа выполниться не может...')
         return
     lessons = Lesson.objects.filter(year_of_study=kid.year_of_study, group_letter=kid.group_letter)
+    if not lessons.count():
+        print('Уроков по этому предмету у ученика не найдено, возможно их пока не было и стоит уточнить ФИО...')
+        return
     subject_lessons = lessons.filter(subject__title=subject)
-    if subject_lessons.count() == 0:
+    if not subject_lessons.count():
         print('Либо нет такого предмета, либо предмет написан с ошибкой...')
         return
     random_lesson = random.choice(subject_lessons)
     lesson_date = random_lesson.date
     lesson_subject = random_lesson.subject
     lesson_teacher = random_lesson.teacher
-    Commendation.create(text=commedation_text, created=lesson_date, schoolkid=kid, subject=lesson_subject, teacher=lesson_teacher)
+    Commendation.odjects.create(text=commedation_text, created=lesson_date, schoolkid=kid, subject=lesson_subject, teacher=lesson_teacher)
     print('Похвала ученику добавлена...')
